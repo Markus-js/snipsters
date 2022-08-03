@@ -1,0 +1,20 @@
+.avatar_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    align-items: center;
+    justify-items: center;
+    margin: 2rem;
+    padding: 0 3rem;
+}
+
+.image_wrapper {
+    width:50px;
+    height:50px;
+    cursor: pointer;
+    img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+}

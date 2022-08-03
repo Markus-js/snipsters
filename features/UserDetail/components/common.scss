@@ -1,0 +1,62 @@
+@import 'styles/colors.scss';
+
+.icon {
+  color: $button-primary;
+  &:hover {
+    cursor: pointer;
+    color: #fff;
+  }
+}
+
+%box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card {
+  border-radius: 0.5rem;
+  background-color: $bg-secondary;
+  border: $bg-secondary-border;
+  padding: 1.5rem;
+  padding-bottom: 1rem ;
+  position: relative;
+  margin-bottom: 2rem;
+  &__title {
+    margin: 0;
+  }
+  &__header {
+    padding: 0.7rem;
+    background-color: #0079d3;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    border-radius: 0.5rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    // height: 2rem;
+    background-image: url('https://www.redditstatic.com/desktop2x/img/leaderboard/banner-background.png');
+  }
+}
+
+.hidden {
+  transition: max-height 0.5s;
+  overflow: hidden;
+  max-height: 0;
+}
+.visiable {
+  transition: max-height 0.5s;
+  overflow: hidden;
+  max-height: 300px;
+}
+
+.input {
+  width: 100%;
+  margin-top: 1rem;
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,17 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+}
+
+@media screen and (max-width: 510px) {
+  .header {
+    height: 8rem;
+    flex-direction: column-reverse;
+    padding-bottom: 1rem;
+  }
+}

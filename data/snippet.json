@@ -1,0 +1,50 @@
+[
+    {
+        "id": "62d8125cd777e011718aad7c",
+        "authorId": "62d81240d777e011718aad77",
+        "public": true,
+        "title": "Snippet",
+        "content": "export default async function handler(req, res) {\n  const snippetId = req.query.id;\n  switch (req.method) {\n    case 'GET':\n      const snippet = await prismaClient.Snippet.findUnique({ where: { id: snippetId } });\n      res.status(200).json(snippet);\n      return;\n    case 'PATCH':\n      const { action, userId } = JSON.parse(req.body);\n      switch (action) {\n        case 'DELETE':\n          const deleted = await prismaClient.Snippet.update({ where: { id: snippetId }, data: { isDeleted: true }});\n          res.status(200).json(deleted);\n          return;\n        case 'VOTE':\n          const upvoted = await prismaClient.Snippet.update({\n            where: { id: snippetId },\n            data: {\n              votes: { \n                connect: {\n                  id: userId\n                }\n              },\n              votesIds: {\n                push: userId\n              }\n            }\n          })\n          res.status(200).json(upvoted);\n          return;\n        case 'FAVORITE':\n          console.log('favourited')\n          const favorited = await prismaClient.User.update({\n            where: { id: userId },\n            data: {\n              favourites: {\n                connect: {\n                  id: snippetId\n                }\n              },\n              favouritesIds: {\n                push: snippetId\n              }\n            }\n          });\n          res.status(200).json(favorited);\n          return;\n        case 'UNFAVORITE':\n          console.log('unfavourited')\n          const { favouritesIds } = await prismaClient.User.findUnique({\n            where: { id: userId },\n            select: { favouritesIds: true }\n          })\n          const unfavorited = await prismaClient.User.update({\n            where: { id: userId },\n            data: {\n              favourites: {\n                connect: {\n                  id: snippetId\n                },\n              },\n              favouritesIds: {\n                set: favouritesIds.filter(id => id !== snippetId)\n              }\n            }\n          });\n          res.status(200).json(unfavorited);\n          return;\n        default:\n          res.status(400).end();\n      }\n    default:\n      res.status(401).json({ error: 'Method Not Allowed' });\n  }\n}",
+        "language": "js",
+        "createdAt": "2022-07-20T14:34:04.281Z",
+        "description": null,
+        "isDeleted": false,
+        "tags": [],
+        "votesIds": [],
+        "favouritedByIds": ["62d81240d777e011718aad77"],
+        "refactorsIds": [],
+        "basedOnId": null
+    },
+    {
+        "id": "62d812a6d777e011718aad8c",
+        "authorId": "62d81292d777e011718aad88",
+        "public": true,
+        "title": "ThomassSnippet",
+        "content": "asdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasdaasdasda",
+        "language": "SQL",
+        "createdAt": "2022-07-20T14:35:18.331Z",
+        "description": null,
+        "isDeleted": false,
+        "tags": [],
+        "votesIds": [],
+        "favouritedByIds": ["62d81240d777e011718aad77"],
+        "refactorsIds": [],
+        "basedOnId": null
+    },
+    {
+        "id": "62d81346d777e011718aad96",
+        "authorId": "62d81240d777e011718aad77",
+        "public": true,
+        "title": "New Snippet",
+        "content": "export default function User({snippet}) {\n  const [user, setUser] = useState();\n\n  useEffect(() => {\n    getUser(snippet.authorId).then(data => setUser(data));\n  }, [])\n\n  return user ? (\n    <Link href={`/users/${user.id}`}>\n    <a>\n    <div className={style.card} >\n      <Avatar className={style.card__image} src={user.image} alt={user.name} />\n      <p className={style.card__name}>{user.name}</p>\n    </div>\n    </a>\n  </Link>\n  ) : <p>Loading...</p>\n}",
+        "language": "js",
+        "createdAt": "2022-07-20T14:37:58.449Z",
+        "description": null,
+        "isDeleted": false,
+        "tags": [],
+        "votesIds": [],
+        "favouritedByIds": ["62d81240d777e011718aad77"],
+        "refactorsIds": [],
+        "basedOnId": null
+    }
+]

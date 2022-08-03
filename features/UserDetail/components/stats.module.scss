@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 2rem;
+}
+
+.stats {
+  &__heading {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: normal;
+  }
+  &__text {
+    margin: 0;
+    font-size: 0.7rem;
+    font-weight: normal;
+  }
+  &__link {
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}

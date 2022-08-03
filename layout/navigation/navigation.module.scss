@@ -1,0 +1,54 @@
+@import 'styles/colors.scss';
+@import 'styles/variables.scss';
+
+.nav {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: #3f51b5;
+  width: 4rem;
+  z-index: 100;
+}
+
+.navLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  &__link {
+    font-size: 2rem;
+    color: $button-primary;
+    background-color: rgb(52, 67, 150);
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 0.5rem;
+    &:hover {
+      color: rgba(255, 255, 255, 0.493);
+      background-color: #3f51b5;
+      border: 2px solid rgb(52, 67, 150);
+    }
+  }
+}
+
+@media screen and (max-width: 1260px) {
+  .nav {
+    height: 4rem;
+    width: 100vw;
+    top: unset;
+    left: unset;
+    flex-direction: row;
+    bottom: 0;
+    .navLinks {
+      flex-direction: row;
+    }
+  }
+}

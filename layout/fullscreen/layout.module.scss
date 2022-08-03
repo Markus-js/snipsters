@@ -1,0 +1,42 @@
+.layout {
+  margin-left: 4rem;
+  height: 100vh;
+}
+
+.main {
+  height: calc(100vh - 4rem);
+  padding: 1rem;
+  margin: auto;
+  max-width: 1400px;
+}
+
+@media screen and (max-width: 1260px) {
+  .layout {
+    margin-left: 0rem;
+  }
+  .main {
+    height: calc(100vh - 8rem);
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .main {
+    height: unset;
+  }
+  .content {
+    flex-direction: column;
+    margin-bottom: 4rem;
+  }
+  .mainContent {
+    width: 100%;
+  }
+  .sideContent {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 510px) {
+  .main {
+    height: calc(100vh - 12rem);
+  }
+}

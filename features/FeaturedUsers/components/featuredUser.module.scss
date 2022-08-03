@@ -1,0 +1,42 @@
+.featuredUser {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+// sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1.5rem'}}
+
+@media screen and (max-width: 1260px) {
+  .featuredUser {
+    flex-direction: column;
+  }
+  .stats {
+    flex-direction: unset;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .featuredUser {
+    flex-direction: unset;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .featuredUser {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .stats {
+    flex-direction: column;
+  }
+}

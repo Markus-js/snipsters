@@ -1,0 +1,153 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                        String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId                    String
+  type                      String
+  provider                  String
+  providerAccountId         String
+  refresh_token             String?  @db.String
+  refresh_token_expires_in  Int?
+  access_token              String?  @db.String
+  expires_at                Int?
+  token_type                String?
+  scope                     String?
+  id_token                  String?  @db.String
+  session_state             String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  identifier      String        @unique
+  token           String        @unique
+  expires         DateTime
+
+  @@unique([identifier, token])
+}
+
+model Session {
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken      String        @unique @map("session_token")
+  userId            String        @db.ObjectId
+  expires           DateTime        
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  name              String?
+  email             String?       @unique
+  image             String?
+  emailVerified     DateTime?
+  bio               String?
+  accounts          Account[]
+  sessions          Session[]
+  activity          Action[]      @relation("activity")
+  events            Action[]      @relation("userEvent")
+  snippets          Snippet[]     @relation("snippets")
+  favourites        Snippet[]     @relation("favourites", fields: [favouritesIds], references: [id])
+  favouritesIds     String[]      @db.ObjectId
+  following         User[]        @relation("following", fields: [followingIds], references: [id])
+  followingIds      String[]      @db.ObjectId
+  followers         User[]        @relation("following", fields: [followersIds], references: [id])
+  followersIds      String[]      @db.ObjectId
+  votedFor          Snippet[]     @relation("votes", fields: [votedForIds], references: [id])
+  votedForIds       String[]      @db.ObjectId
+  comments          Comment[]     @relation("commentAuthor")
+  likedComments     Comment[]     @relation("likedComments", fields: [likedCommentsIds], references: [id])
+  likedCommentsIds  String[]      @db.ObjectId
+
+  @@unique([id, name])
+}
+
+model Snippet {
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  author            User          @relation("snippets", fields: [authorId, authorName], references: [id, name], onDelete: Cascade)
+  authorId          String        @db.ObjectId
+  authorName        String
+  public            Boolean
+  title             String
+  content           String
+  language          String
+  createdAt         DateTime      @default(now())
+  description       String?
+  isDeleted         Boolean       @default(false)
+  tags              Tag[]
+  events            Action[]      @relation("snippetEvent")
+  votes             User[]        @relation("votes", fields: [votesIds], references: [id])
+  votesIds          String[]      @db.ObjectId
+  favouritedBy      User[]        @relation("favourites", fields: [favouritedByIds], references: [id])
+  favouritedByIds   String[]      @db.ObjectId
+  refactors         Snippet[]     @relation("refactors")
+  refactorsIds      String[]      @db.ObjectId
+  basedOn           Snippet?      @relation("refactors", fields: [basedOnId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  basedOnId         String?       @db.ObjectId
+  comments          Comment[]     @relation("comment")
+} 
+
+model Action {
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  actor             User          @relation("activity", fields: [actorId], references: [id])
+  actorId           String        @db.ObjectId
+  type              ActionType
+  targetUser        User?         @relation("userEvent", fields: [targetUserId], references: [id])
+  targetUserId      String?       @db.ObjectId
+  targetSnippet     Snippet?      @relation("snippetEvent", fields: [targetSnippetId], references: [id])
+  targetSnippetId   String?       @db.ObjectId
+  targetComment     Comment?      @relation("commentEvent", fields: [targetCommentId], references: [id])
+  targetCommentId   String?       @db.ObjectId
+  createdAt         DateTime      @default(now())
+}
+
+model Comment {
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  text              String
+  snippet           Snippet       @relation("comment", fields: [snippetId], references: [id])
+  snippetId         String        @db.ObjectId
+  author            User          @relation("commentAuthor", fields: [authorId], references: [id])
+  authorId          String        @db.ObjectId
+  likes             User[]        @relation("likedComments", fields: [likesIds], references: [id])
+  likesIds          String[]      @db.ObjectId
+  replies           Comment[]     @relation("replies")
+  repliesIds        String[]      @db.ObjectId
+  replyTo           Comment?      @relation("replies", fields: [repliesIds], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  events            Action[]      @relation("commentEvent")
+  createdAt         DateTime      @default(now())
+}
+
+enum Tag {
+  REDUX
+  REACT
+  TYPESCRIPT
+  VANILLA
+  ES6
+  ALGORITHM
+  BOILERPLATE
+  ANGULAR
+  VUE
+  NEXT
+  NUXT
+  JQUERY
+}
+
+enum ActionType {
+  VOTE_SNIPPET
+  FAVOURITE_SNIPPET
+  REFACTOR_SNIPPET
+  CREATE_SNIPPET
+  COMMENTED_SNIPPET
+  LIKED_COMMENT
+  REPLIED_COMMENT
+  FOLLOW_USER
+}

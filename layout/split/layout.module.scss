@@ -1,0 +1,63 @@
+@import 'styles/variables.scss';
+.layout {
+  margin-left: 4rem;
+  height: 100vh;
+}
+
+.main {
+  height: calc(100vh - 4rem);
+  padding: 1rem;
+  margin: auto;
+  max-width: 1400px;
+}
+
+.content {
+  display: flex;
+  gap: 1rem;
+  height: 100%;
+}
+
+.mainContent {
+  height: 100%;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sideContent {
+  height: 100%;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 1260px) {
+  .layout {
+    margin-left: 0rem;
+  }
+  .main {
+    height: calc(100vh - 8rem);
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .layout {
+    height: unset;
+  }
+  .main {
+    height: unset;
+  }
+  .content {
+    flex-direction: column;
+    margin-bottom: 4rem;
+    height: unset;
+  }
+  .mainContent {
+    width: 100%;
+    height: unset;
+  }
+  .sideContent {
+    width: 100%;
+    height: unset;
+  }
+}
